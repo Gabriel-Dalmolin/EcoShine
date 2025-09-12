@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="output.css">
+    <script src="https://kit.fontawesome.com/b072edff8a.js" crossorigin="anonymous"></script>
+    <title>EcoShine</title>
+    <link rel="icon" type="image/x-icon" href="/images/logo.jpg">
+</head>
+
+<body class="font-sans bg-[#f6e9d2] min-h-screen flex flex-col" id="body">
+    <div id="tint"
+        class="bg-black/0 absolute w-full h-full duration-500 transition-all pointer-events-none flex items-center justify-center">
+
+        <div class="opacity-0 bg-[#f6e9d2] p-4 sm:p-8 md:p-12 rounded-lg shadow-lg text-opacity-100 text-black flex flex-col items-center"
+            id="contact_box">
+            <h4 class="font-semibold text-lg sm:text-xl md:text-3xl mb-4">Fale conosco!</h4>
+
+            <div class="flex flex-col">
+                <a href="https://www.instagram.com/ecoshine_ltda/" class="text-md sm:text-lg md:text-xl mb-1"
+                    target="_blank">
+                    <i class="fa-brands fa-instagram"></i> <span class="underline">Instagram</span>
+                </a>
+
+                <a href="https://wa.me/5554999987110" class="text-md sm:text-lg md:text-xl" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> <span class="underline">Whatsapp</span>
+                </a>
+
+                <a href="mailto:gabrielsomacaldalmolin@gmail.com" class="text-md sm:text-lg md:text-xl" target="_blank">
+                    <i class="fa-solid fa-envelope"></i> <span class="underline">Email</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <header class="flex justify-between py-4 px-4 sm:px-8 md:px-12 items-center">
+        <div>
+            <h1 class="font-serif text-xl sm:text-3xl md:text-5xl"><a href="index.html">EcoShine</a></h1>
+        </div>
+
+        <div class="flex gap-4 sm:gap-8 text-lg sm:text-xl md:text-2xl">
+            <a href="index.html" class="hover:scale-105 transition-all">início</a>
+
+            <a href="products.html" class="hover:scale-105 transition-all">produtos</a>
+
+            <button class="hover:scale-105 transition-all" id="contact_button">contato</button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex flex-col items-center mt-4">
+        <img src="images/banner.png" alt="" class="w-5/6 sm:w-3/4 md:w-1/2 rounded-xl">
+
+        <a href="products.html"
+            class="bg-[#afcbfa] my-8 py-2 px-8 rounded-2xl text-lg sm:text-xl md:text-3xl transition-all duration-200 hover:scale-110 hover:bg-[#a9c2eb]">
+            Explore nossos produtos!
+        </a>
+
+        <div class="mt-12 flex flex-col items-center">
+            <h3 class="text-3xl sm:text-5xl">Sobre nós</h3>
+            <div class="w-4/5 sm:w-3/4 md:w-3/5 leading leading-relaxed text-lg sm:text-xl text-justify mt-4">
+                <p class="indent-12">Na EcoShine, acreditamos que o cuidado com a beleza pode andar de mãos dadas
+                    com o respeito à natureza.</p>
+
+                <p class="indent-12">Nosso propósito é oferecer produtos capilares que nutrem e protegem os fios,
+                    utilizando fórmulas ecológicas, seguras e livres de agressões ao meio ambiente.</p>
+
+                <p class="indent-12">Cada detalhe é pensado com carinho — desde os ingredientes selecionados até as
+                    embalagens sustentáveis — para que você possa se cuidar de forma consciente e responsável.</p>
+
+                <p class="indent-12">Mais do que cosméticos, queremos inspirar uma rotina de autocuidado que reflita
+                    equilíbrio, bem-estar e respeito ao planeta. Porque quando você brilha, a natureza também
+                    brilha!</p>
+            </div>
+        </div>
+
+        <div class="mt-12 flex flex-col items-center">
+            <h3 class="text-3xl sm:text-5xl">Nossa missão</h3>
+            <div class="w-4/5 sm:w-3/4 md:w-3/5 leading leading-relaxed text-lg sm:text-xl text-justify mt-4">
+                <p class="indent-12">Nossa missão é oferecer cuidados capilares de alta qualidade pormeio de óleos 100%
+                    naturais, sustentáveis e livre sde crueldade, promovendo a beleza saudável enquanto respeitamos o
+                    meio
+                    ambiente e valorizando práticas éticas em toda a cadeia produtiva.</p>
+            </div>
+        </div>
+
+        <div class="mt-12 flex flex-col items-center">
+            <h3 class="text-3xl sm:text-5xl">Nossos valores</h3>
+            <ul class="list-disc list-inside mt-4 text-lg sm:text-xl">
+                <li>Sustentabilidade</li>
+                <li>Cruelty-free (livre de testes em animais)</li>
+                <li>Transparência e ética</li>
+                <li>Bem-estar e autocuidado consciente</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="flex flex-col items-center p-4 mt-24 text-lg sm:text-xl">
+        <p>EcoShine Cosméticos Sustentáveis Ltda.</p>
+        <p>Colégio Sagrado Coração de Jesus</p>
+    </footer>
+
+    <script>
+        const contact_button = document.getElementById("contact_button");
+        const contact_box = document.getElementById("contact_box");
+        const tint = document.getElementById("tint");
+
+        contact_button.onclick = (() => {
+            tint.classList.toggle("bg-black/0");
+            tint.classList.toggle("bg-black/30");
+            tint.classList.toggle("pointer-events-none");
+            contact_box.classList.toggle("opacity-0");
+            contact_box.classList.toggle("opacity-100");
+        })
+
+        tint.onclick = (() => {
+            tint.classList.toggle("bg-black/0");
+            tint.classList.toggle("bg-black/30");
+            tint.classList.toggle("pointer-events-none");
+            contact_box.classList.toggle("opacity-0");
+            contact_box.classList.toggle("opacity-100");
+        })
+    </script>
+</body>
+
+</html>
