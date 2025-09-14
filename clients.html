@@ -98,17 +98,24 @@
         const spinner = document.getElementById("spinner");
         const show_not_paid_only = document.getElementById("show_not_paid_only");
         let reserved_data;
+        let customers_global;
 
 
-        async function loadReservedData() {
+        async function loadReservedData(customers = null) {
             try {
-                const response = await fetch('https://ecoshine-backend-ey52.onrender.com/', {
-                    method: 'GET',
-                });
+                if (!customers) {
+                    const response = await fetch('https://ecoshine-backend-ey52.onrender.com/', {
+                        method: 'GET',
+                    });
+                    reserved_data = await response.json();
+                } else {
+                    reserved_data = customers;
+                }
 
                 reserved_products_div.innerHTML = "";
 
-                reserved_data = await response.json();
+                customers_global = reserved_data;
+
                 show_not_paid_only_value = show_not_paid_only.checked
 
                 console.log(reserved_data);
@@ -258,7 +265,7 @@
         })
 
         show_not_paid_only.onclick = (() => {
-            loadReservedData();
+            loadReservedData(customers = customers_global);
         })
 
     </script>
