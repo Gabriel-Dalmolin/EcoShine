@@ -8,6 +8,11 @@
     <script src="https://kit.fontawesome.com/b072edff8a.js" crossorigin="anonymous"></script>
     <title>EcoShine</title>
     <link rel="icon" type="image/x-icon" href="/images/logo.jpg">
+    <style>
+        body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="font-sans bg-[#f6e9d2] min-h-screen flex flex-col" id="body">
@@ -36,7 +41,8 @@
         </div>
     </div>
 
-    <header class="flex justify-between py-4 px-4 sm:px-8 md:px-12 items-center">
+    <header
+        class="flex justify-between py-4 px-4 sm:px-8 md:px-12 items-center sticky top-0 bg-[#f6e9d2] border-b-2 border-gray-600 z-50">
         <div>
             <h1 class="font-serif text-xl sm:text-3xl md:text-5xl"><a href="index.html">EcoShine</a></h1>
         </div>
@@ -55,7 +61,7 @@
 
         <a href="products.html"
             class="bg-[#afcbfa] my-8 py-2 px-8 rounded-2xl text-lg sm:text-xl md:text-3xl transition-all duration-200 hover:scale-110 hover:bg-[#a9c2eb]">
-            Explore nossos produtos!
+            Explore nossos produtos
         </a>
 
         <div class="mt-12 flex flex-col items-center">

@@ -8,11 +8,16 @@
     <script src="https://kit.fontawesome.com/b072edff8a.js" crossorigin="anonymous"></script>
     <title>EcoShine</title>
     <link rel="icon" type="image/x-icon" href="/images/logo.jpg">
+    <style>
+        body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="font-sans bg-[#f6e9d2] min-h-screen flex flex-col" id="body">
     <div id="tint"
-        class="bg-black/0 absolute w-full h-full duration-500 transition-all pointer-events-none flex items-center justify-center">
+        class="bg-black/0 fixed inset-0 w-full h-full duration-500 transition-all pointer-events-none flex items-center justify-center">
 
         <div class="opacity-0 bg-[#f6e9d2] p-4 sm:p-8 md:p-12 rounded-lg shadow-lg text-opacity-100 text-black flex flex-col items-center"
             id="contact_box">
@@ -36,7 +41,8 @@
         </div>
     </div>
 
-    <header class="flex justify-between py-4 px-4 sm:px-8 md:px-12 items-center">
+    <header
+        class="flex justify-between py-4 px-4 sm:px-8 md:px-12 items-center sticky top-0 bg-[#f6e9d2] border-b-2 border-gray-600 z-50">
         <div>
             <h1 class="font-serif text-xl sm:text-3xl md:text-5xl"><a href="index.html">EcoShine</a></h1>
         </div>
@@ -60,6 +66,33 @@
             <img src="images/tutti_frutti.jpeg"
                 class="w-2/3 sm:w-1/2 md:w-[28%] shadow-md rounded-3xl hover:scale-110 transition-all">
         </div>
+        <div class="bg-white mt-8 py-4 sm:py-8 px-8 sm:px-16 rounded-3xl flex flex-col items-center">
+            <h3 class="text-xl sm:text-3xl mb-4 sm:mb-8">Reserve o seu!</h3>
+            <form action="" class="flex flex-col items-center">
+                <div class="flex justify-center">
+                    <div class="gap-2 flex flex-col">
+                        <p class="h-8">Nome</p>
+                        <p class="h-8">Email</p>
+                        <p class="h-8">Nº bebê</p>
+                        <p class="h-8">Nº Tutti Frutti</p>
+                        <p class="h-8">Nº Vanilla</p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <input type="text" class="ml-4 border-2 rounded-lg h-8" id="name_input" required>
+                        <input type="email" class="ml-4 border-2 rounded-lg h-8" id="email_input" required>
+                        <input type="number" class="ml-4 border-2 rounded-lg h-8" id="baby_input" min="0" value="0">
+                        <input type="number" class="ml-4 border-2 rounded-lg h-8" id="tutti_frutti_input" min="0"
+                            value="0">
+                        <input type="number" class="ml-4 border-2 rounded-lg h-8" id="vanilla_input" min="0" value="0">
+                    </div>
+                </div>
+                <button
+                    class="bg-[#afcbfa] my-8 py-2 px-8 rounded-2xl text-lg sm:text-xl transition-all duration-200 hover:scale-110 hover:bg-[#a9c2eb]"
+                    id="submit_button" type="submit">
+                    Reservar
+                </button>
+            </form>
+        </div>
     </main>
 
     <footer class="flex flex-col items-center p-4 mt-24">
@@ -71,6 +104,12 @@
         const contact_button = document.getElementById("contact_button");
         const contact_box = document.getElementById("contact_box");
         const tint = document.getElementById("tint");
+        const submit_button = document.getElementById("submit_button");
+        const baby_input = document.getElementById("baby_input");
+        const tutti_frutti_input = document.getElementById("tutti_frutti_input");
+        const vanilla_input = document.getElementById("vanilla_input");
+        const name_input = document.getElementById("name_input");
+        const email_input = document.getElementById("email_input");
 
         contact_button.onclick = (() => {
             tint.classList.toggle("bg-black/0");
@@ -86,6 +125,34 @@
             tint.classList.toggle("pointer-events-none");
             contact_box.classList.toggle("opacity-0");
             contact_box.classList.toggle("opacity-100");
+        })
+
+        submit_button.onclick = ((e) => {
+            e.preventDefault();
+            if ((!baby_input.value && !tutti_frutti_input.value && !vanilla_input.value) || (baby_input.value == 0 && tutti_frutti_input.value == 0 && vanilla_input.value == 0)) {
+                alert("Por favor, selecione pelo menos uma fragância de óleo para efetuar sua reserva")
+                return
+            }
+
+            postData = {
+                customer: name_input.value,
+                email: email_input.value,
+                n_baby: baby_input.value,
+                n_tutti: tutti_frutti_input.value,
+                n_vanilla: vanilla_input.value,
+            }
+
+            fetch('https://ecoshine-backend-ey52.onrender.com/new_customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+            }).then(
+                () => {
+                    window.location.reload()
+                }
+            );
         })
     </script>
 </body>
