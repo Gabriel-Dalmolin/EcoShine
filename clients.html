@@ -90,7 +90,9 @@
         <p>Colégio Sagrado Coração de Jesus</p>
     </footer>
 
-    <script>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
         const contact_button = document.getElementById("contact_button");
         const contact_box = document.getElementById("contact_box");
         const tint = document.getElementById("tint");
@@ -100,14 +102,19 @@
         let reserved_data;
         let customers_global;
 
+        const supabase_url = "https://utlgbscqjhzfeoprjdxu.supabase.co";
+        const supabase_anon = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0bGdic2Nxamh6ZmVvcHJqZHh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3OTcyNzAsImV4cCI6MjA3MzM3MzI3MH0.Aex8mw2JFM2SmGPasyBl3TdQP5S6IUQPR7heBA5Slu4";
+        const supabase = createClient(supabase_url, supabase_anon);
+
 
         async function loadReservedData(customers = null) {
             try {
                 if (!customers) {
-                    const response = await fetch('https://ecoshine-backend-ey52.onrender.com/', {
-                        method: 'GET',
-                    });
-                    reserved_data = await response.json();
+                    const { data, error } = await supabase.from("EcoShine").select("*");
+
+                    if (error) console.log(error);
+
+                    reserved_data = data;
                 } else {
                     reserved_data = customers;
                 }
@@ -116,7 +123,7 @@
 
                 customers_global = reserved_data;
 
-                show_not_paid_only_value = show_not_paid_only.checked
+                const show_not_paid_only_value = show_not_paid_only.checked
 
                 console.log(reserved_data);
 
@@ -173,23 +180,15 @@
                     payed_checkbox.classList.add("scale-150");
                     payed_checkbox.classList.add("accent-green-500");
 
-                    payed_checkbox.onclick = (() => {
+                    payed_checkbox.onclick = (async () => {
                         let value = payed_checkbox.checked;
                         customer["paid"] = value;
                         if (show_not_paid_only_value) {
                             new_block.remove()
                         }
 
-                        fetch('https://ecoshine-backend-ey52.onrender.com/user_paid/', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                id: customer["id"],
-                                paid: value
-                            }),
-                        });
+                        const { error } = await supabase.from("EcoShine").update({ paid: value }).eq("id", customer["id"]);
+                        if (error) console.log(error);
                     })
 
 
@@ -203,20 +202,11 @@
                     delete_reserve_button.classList.add("hover:scale-105");
                     delete_reserve_button.classList.add("transition-all");
 
-                    delete_reserve_button.onclick = ((e) => {
+                    delete_reserve_button.onclick = (async (e) => {
                         e.preventDefault();
                         new_block.remove();
-                        fetch('https://ecoshine-backend-ey52.onrender.com/delete_user/', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ id: customer["id"] }),
-                        }).then(
-                            () => {
-                                window.location.reload()
-                            }
-                        );
+                        const { error } = await supabase.from("EcoShine").delete().eq("id", customer["id"]);
+                        if (error) console.log(error);
                     })
 
 
@@ -266,7 +256,7 @@
         })
 
         show_not_paid_only.onclick = (() => {
-            loadReservedData(customers = customers_global);
+            loadReservedData(customers_global);
         })
 
     </script>

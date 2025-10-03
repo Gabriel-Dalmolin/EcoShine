@@ -95,7 +95,22 @@
 
 
         </div>
-        <div class="bg-white mt-8 py-4 sm:py-8 px-8 sm:px-16 rounded-3xl flex flex-col items-center">
+        <div class="bg-white mt-8 py-4 sm:py-8 px-8 sm:px-16 rounded-3xl flex flex-col items-center relative">
+
+            <div role="status" id="spinner"
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+                <svg aria-hidden="true" class="w-16 h-16 text-[#f6e9d2] animate-spin dark:text-[#f6e9d2] fill-[#afcbfa]"
+                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor" />
+                    <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill" />
+                </svg>
+                <span class="sr-only">Loading...</span>
+            </div>
+
             <h3 class="text-xl sm:text-3xl mb-4 sm:mb-8">Reserve o seu!</h3>
             <form action="" class="flex flex-col items-center">
                 <div class="flex justify-center">
@@ -129,7 +144,9 @@
         <p>Colégio Sagrado Coração de Jesus</p>
     </footer>
 
-    <script>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
         const contact_button = document.getElementById("contact_button");
         const contact_box = document.getElementById("contact_box");
         const tint = document.getElementById("tint");
@@ -139,6 +156,11 @@
         const vanilla_input = document.getElementById("vanilla_input");
         const name_input = document.getElementById("name_input");
         const email_input = document.getElementById("email_input");
+        const spinner = document.getElementById("spinner");
+
+        const supabase_url = "https://utlgbscqjhzfeoprjdxu.supabase.co";
+        const supabase_anon = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0bGdic2Nxamh6ZmVvcHJqZHh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3OTcyNzAsImV4cCI6MjA3MzM3MzI3MH0.Aex8mw2JFM2SmGPasyBl3TdQP5S6IUQPR7heBA5Slu4";
+        const supabase = createClient(supabase_url, supabase_anon);
 
         contact_button.onclick = (() => {
             tint.classList.toggle("bg-black/0");
@@ -156,32 +178,31 @@
             contact_box.classList.toggle("opacity-100");
         })
 
-        submit_button.onclick = ((e) => {
+        submit_button.onclick = (async (e) => {
             e.preventDefault();
             if ((!baby_input.value && !tutti_frutti_input.value && !vanilla_input.value) || (baby_input.value == 0 && tutti_frutti_input.value == 0 && vanilla_input.value == 0)) {
                 alert("Por favor, selecione pelo menos uma fragância de óleo para efetuar sua reserva")
                 return
             }
 
-            postData = {
+            spinner.classList.toggle("hidden");
+            submit_button.disabled = true;
+
+            const postData = {
                 customer: name_input.value,
                 email: email_input.value,
                 n_baby: baby_input.value,
                 n_tutti: tutti_frutti_input.value,
                 n_vanilla: vanilla_input.value,
+                paid: false,
             }
 
-            fetch('https://ecoshine-backend-ey52.onrender.com/new_customer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(postData),
-            }).then(
-                () => {
-                    window.location.reload()
-                }
-            );
+            const { error } = await supabase.from("EcoShine").insert(postData);
+
+            if (error) {
+                console.error(error);
+            }
+            window.location.reload();
         })
     </script>
 </body>
