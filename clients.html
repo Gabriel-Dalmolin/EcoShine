@@ -175,6 +175,7 @@
 
                     payed_checkbox.onclick = (() => {
                         let value = payed_checkbox.checked;
+                        customer["paid"] = value;
                         if (show_not_paid_only_value) {
                             new_block.remove()
                         }
